@@ -24,7 +24,9 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.set(1, 1, 2);
 
 //レンダラー
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({
+  // alpha: true
+});
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
@@ -36,6 +38,27 @@ document.body.appendChild(renderer.domElement);
 /**
  * パーティクル
  */
+
+//ジオメトリ
+const particlesGeometry = new THREE.BufferGeometry()
+const count = 1000;
+
+const positionArray = new Float32Array(count * 3);
+
+for (let i = 0; i < count * 3; i++) {
+  positionArray[i] = Math.random();
+}
+
+particlesGeometry.setAttribute("position", new THREE.BufferAttribute(positionArray, 3));
+
+// マテリアル
+const PointMaterial = new THREE.PointsMaterial({
+  size: 0.02,
+});
+
+// メッシュ
+const particles = new THREE.Points(particlesGeometry, PointMaterial)
+scene.add(particles)
 
 //マウス操作
 const controls = new OrbitControls(camera, renderer.domElement);
